@@ -20,6 +20,10 @@
 
   vars_files:
     - ["../custom.config.yml", "../default.config.yml"]
+  
+  environment:
+    K8S_AUTH_KUBECONFIG: "{{ lookup('env', 'HOME') }}/.kube/config"
+    PATH: "/usr/local/bin:{{ lookup('env', 'PATH') }}" #required as the aws cli lives at /usr/local/bin/aws
 
   tasks:
 
