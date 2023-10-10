@@ -22,6 +22,9 @@
     path: ~/.kube
     state: directory
   delegate_to: localhost
+  when:
+    - kube_install
+    - "'k3s.service' not in services"
 
 - name: Copy kubeconfig file from default location to the ~/.kube directory"
   ansible.builtin.fetch:
@@ -29,6 +32,9 @@
     dest: ~/.kube/config
     flat: true
   become: true
+  when:
+    - kube_install
+    - "'k3s.service' not in services"
 
 - name: "Replace the kubeconfig cluster kube-api server IP with the public IP address, if the cluster is remote "
   ansible.builtin.replace:
@@ -37,6 +43,9 @@
     replace: "{{ k3s_master_node_ip }}"
   delegate_to: localhost
   when: ansible_host != "localhost"
+  when:
+    - kube_install
+    - "'k3s.service' not in services"
   
 
 - name: Get a list of all nodes
